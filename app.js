@@ -312,65 +312,89 @@
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     };
 
-    submitBtn.onclick = async () => {
-      if (!currentQuiz) return;
+submitBtn.onclick = async () => {
+  try {
+    if (!currentQuiz) return;
 
-      if (await hasAttempt(user.uid, currentQuiz.id)) {
-        stopTimer();
-        submitNote.textContent = "Schon erledigt. Keine Punkte.";
-        return refreshQuizList();
-      }
+    submitBtn.disabled = true;
+    submitNote.textContent = "Speichere…";
 
-      let answered = 0;
-      let correct = 0;
-      const wrong = [];
-
-      currentQuiz.questions.forEach((item, idx) => {
-        const selected = quizForm.querySelector(`input[name="q_${idx}"]:checked`);
-        if (selected) answered++;
-        const chosen = selected ? Number(selected.value) : null;
-
-        if (chosen === item.answerIndex) {
-          correct++;
-        } else {
-          wrong.push({
-            index: idx + 1,
-            q: item.q,
-            correct: item.choices[item.answerIndex],
-            chosen: chosen === null ? null : item.choices[chosen]
-          });
-        }
-      });
-
-      if (answered < currentQuiz.questions.length) {
-        resultBox.className = "card warn";
-        resultBox.style.display = "";
-        resultBox.textContent = `Bitte alle Fragen beantworten. (${answered}/${currentQuiz.questions.length})`;
-        return;
-      }
-
+    if (await hasAttempt(user.uid, currentQuiz.id)) {
       stopTimer();
-      const durationSec = Math.floor((Date.now() - startTs) / 1000);
-      const ppq = Number(currentQuiz.pointsPerQuestion || 1);
-      const gainedPoints = correct * ppq;
+      submitNote.textContent = "Schon erledigt. Keine Punkte.";
+      submitBtn.disabled = false;
+      return refreshQuizList();
+    }
 
-      await saveAttempt(user.uid, currentQuiz, correct, gainedPoints, durationSec, wrong);
-      await awardPoints(user.uid, gainedPoints);
+    let answered = 0;
+    let correct = 0;
+    const wrong = [];
 
-      await refreshDashboard();
-      await refreshQuizList();
+    currentQuiz.questions.forEach((item, idx) => {
+      const selected = quizForm.querySelector(`input[name="q_${idx}"]:checked`);
+      if (selected) answered++;
+      const chosen = selected ? Number(selected.value) : null;
 
-      resultBox.className = "card ok";
+      if (chosen === item.answerIndex) {
+        correct++;
+      } else {
+        wrong.push({
+          index: idx + 1,
+          q: item.q,
+          correct: item.choices[item.answerIndex],
+          chosen: chosen === null ? null : item.choices[chosen]
+        });
+      }
+    });
+
+    if (answered < currentQuiz.questions.length) {
+      resultBox.className = "card warn";
       resultBox.style.display = "";
-      resultBox.innerHTML = `
-        <div class="big">Ergebnis: ${correct}/${currentQuiz.questions.length}</div>
-        <div>Punkte: +${gainedPoints}</div>
-        <div>Dauer: ${formatDuration(durationSec)}</div>
-        <div class="muted" style="margin-top:8px;">Falsche Fragen: ${wrong.length}</div>
-      `;
+      resultBox.textContent = `Bitte alle Fragen beantworten. (${answered}/${currentQuiz.questions.length})`;
+      submitNote.textContent = "";
+      submitBtn.disabled = false;
+      return;
+    }
 
-      currentQuiz = null;
-    };
+    stopTimer();
+
+    const durationSec = Math.floor((Date.now() - startTs) / 1000);
+    const ppq = Number(currentQuiz.pointsPerQuestion || 1);
+    const gainedPoints = correct * ppq;
+
+    await saveAttempt(user.uid, currentQuiz, correct, gainedPoints, durationSec, wrong);
+    await awardPoints(user.uid, gainedPoints);
+
+    await refreshDashboard();
+    await refreshQuizList();
+
+    resultBox.className = "card ok";
+    resultBox.style.display = "";
+    resultBox.innerHTML = `
+      <div class="big">Ergebnis: ${correct}/${currentQuiz.questions.length}</div>
+      <div>Punkte: +${gainedPoints}</div>
+      <div>Dauer: ${formatDuration(durationSec)}</div>
+      <div class="muted" style="margin-top:8px;">Falsche Fragen: ${wrong.length}</div>
+    `;
+
+    submitNote.textContent = "";
+    currentQuiz = null;
+    submitBtn.disabled = false;
+  } catch (e) {
+    stopTimer();
+    console.error(e);
+
+    resultBox.className = "card warn";
+    resultBox.style.display = "";
+    resultBox.textContent =
+      "Fehler beim Speichern/Auswerten: " +
+      (e && e.message ? e.message : String(e));
+
+    submitNote.textContent = "";
+    submitBtn.disabled = false;
+  }
+};
+
 
     (async () => {
       await refreshDashboard();
