@@ -22,15 +22,19 @@
 <body>
   <h1>Quiz Admin</h1>
 
-  <div class="card" id="pinCard">
-    <div class="muted">Parent PIN</div>
+  <div class="card" id="loginCard">
+    <h2>Login</h2>
     <div class="row">
-      <input id="pinInput" type="password" placeholder="PIN" />
-      <button id="pinBtn">Öffnen</button>
+      <input id="email" placeholder="Email" />
+      <input id="password" type="password" placeholder="Passwort" />
+      <button id="loginBtn">Login</button>
+      <button id="logoutBtn" style="display:none;">Logout</button>
     </div>
-    <div class="muted" style="margin-top:8px;">
-      Hinweis: Das ist nur UI-Schutz. Für echte Sicherheit brauchst du Login + DB-Regeln (kann ich dir auch geben).
-    </div>
+    <div class="muted" id="loginInfo"></div>
+  </div>
+
+  <div class="card" id="notAdmin" style="display:none;">
+    <div class="warn">Dieses Konto ist kein Admin.</div>
   </div>
 
   <div id="adminArea" style="display:none;">
@@ -43,7 +47,7 @@
         </div>
         <div>
           <div class="muted">Punkte pro richtige Antwort</div>
-          <input id="ppqInput" type="number" min="1" value="1" style="width:160px;" />
+          <input id="ppqInput" type="number" min="1" value="1" style="width:170px;" />
         </div>
         <div>
           <div class="muted">Veröffentlichen?</div>
@@ -73,11 +77,8 @@ Correct: B</pre>
     </div>
 
     <div class="card">
-      <h2>History & Statistik (pro Quiz)</h2>
-      <div class="row">
-        <input id="kidFilter" placeholder="Kid Name (optional)" />
-        <button id="loadHistory">Laden</button>
-      </div>
+      <h2>History & Statistik</h2>
+      <button id="loadHistory">Laden</button>
       <div id="historyBox" class="muted" style="margin-top:10px;">Noch nichts geladen.</div>
     </div>
   </div>
