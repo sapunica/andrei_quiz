@@ -19,7 +19,7 @@
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -31,6 +31,42 @@
             color: #667eea;
             text-align: center;
             margin-bottom: 30px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .nav-tab:hover {
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
         }
         
         .score-board {
@@ -50,6 +86,17 @@
         .score-board p {
             font-size: 18px;
             opacity: 0.9;
+        }
+        
+        .timer {
+            background: #ffd93d;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
         }
         
         .reward-status {
@@ -73,6 +120,31 @@
             border-bottom: 2px solid #667eea;
         }
         
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            font-family: monospace;
+            resize: vertical;
+        }
+        
         .upload-area {
             border: 3px dashed #667eea;
             border-radius: 10px;
@@ -80,6 +152,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            margin-bottom: 15px;
         }
         
         .upload-area:hover {
@@ -89,6 +162,28 @@
         
         .upload-area input {
             display: none;
+        }
+        
+        .points-setting {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .points-setting label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .points-setting input {
+            width: 100px;
+            padding: 8px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 16px;
         }
         
         .btn {
@@ -113,11 +208,31 @@
             cursor: not-allowed;
         }
         
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+        
         .question-card {
             background: #f8f9fa;
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .points-badge {
+            background: #ffd93d;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
         }
         
         .question-text {
@@ -182,20 +297,112 @@
             color: #c62828;
         }
         
-        .instructions {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #ffc107;
+        .history-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #667eea;
         }
         
-        .instructions pre {
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .history-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .history-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .history-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
             margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .history-detail {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .history-detail strong {
+            color: #333;
+        }
+        
+        .wrong-questions {
+            margin-top: 15px;
+            padding: 15px;
+            background: #ffebee;
+            border-radius: 10px;
+        }
+        
+        .wrong-questions h4 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+        
+        .wrong-questions ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .wrong-questions li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ffcdd2;
+        }
+        
+        .wrong-questions li:last-child {
+            border-bottom: none;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1976d2;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
         }
         
         .hidden {
@@ -207,76 +414,205 @@
     <div class="container">
         <h1>📚 Reading Quiz Challenge</h1>
         
-        <div class="score-board">
-            <p>Current Score</p>
-            <h2 id="score">0</h2>
-            <p>out of 90 points</p>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('create')">Create Quiz</button>
+            <button class="nav-tab" onclick="switchTab('history')">History & Statistics</button>
         </div>
         
-        <div id="rewardStatus" class="reward-status hidden"></div>
-        
-        <div id="uploadSection" class="section">
-            <h3>Upload Questions</h3>
-            <div class="instructions">
-                <strong>Format your questions like this:</strong>
-                <pre>Q: What is the main character's name?
+        <div id="createTab" class="tab-content active">
+            <div id="uploadSection" class="section">
+                <h3>Create New Quiz</h3>
+                
+                <div class="form-group">
+                    <label for="quizTitle">Quiz Title *</label>
+                    <input type="text" id="quizTitle" placeholder="e.g., Das Eismonster - Chapter 1-5" required>
+                </div>
+                
+                <div class="points-setting">
+                    <label for="pointsPerQuestion">Points per correct answer:</label>
+                    <input type="number" id="pointsPerQuestion" value="1" min="1" max="10">
+                </div>
+                
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <p>📁 Click to upload a text file with questions</p>
+                    <p style="font-size: 14px; color: #666; margin-top: 10px;">Or paste questions below</p>
+                    <input type="file" id="fileInput" accept=".txt">
+                </div>
+                
+                <div class="form-group">
+                    <label for="questionsText">Questions (Q: question, A-D options, Correct: letter)</label>
+                    <textarea id="questionsText" rows="10" placeholder="Q: What is the main character's name?
 A) John
 B) Sarah
 C) Michael
 D) Emma
-Correct: B
-
-Q: Where does the story take place?
-A) New York
-B) London
-C) Paris
-D) Tokyo
-Correct: C</pre>
+Correct: B"></textarea>
+                </div>
+                
+                <button class="btn" onclick="loadQuestions()">Start Quiz</button>
             </div>
-            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <p>📁 Click to upload a text file with questions</p>
-                <p style="font-size: 14px; color: #666; margin-top: 10px;">Or paste questions below</p>
-                <input type="file" id="fileInput" accept=".txt">
+            
+            <div id="quizSection" class="section hidden">
+                <div class="timer" id="timer">Time: 00:00</div>
+                
+                <div class="score-board">
+                    <p><span id="quizTitleDisplay"></span></p>
+                    <h2 id="currentScore">0</h2>
+                    <p>points</p>
+                </div>
+                
+                <h3>Question <span id="questionNumber">1</span> of <span id="totalQuestions">0</span></h3>
+                <div id="questionCard" class="question-card"></div>
+                <button id="nextBtn" class="btn hidden" onclick="nextQuestion()">Next Question</button>
             </div>
-            <textarea id="questionsText" placeholder="Or paste your questions here..." style="width: 100%; height: 150px; margin-top: 15px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-family: monospace;"></textarea>
-            <button class="btn" onclick="loadQuestions()">Load Questions</button>
         </div>
         
-        <div id="quizSection" class="section hidden">
-            <h3>Question <span id="questionNumber">1</span> of <span id="totalQuestions">0</span></h3>
-            <div id="questionCard" class="question-card"></div>
-            <button id="nextBtn" class="btn hidden" onclick="nextQuestion()">Next Question</button>
-            <button class="btn" onclick="resetQuiz()" style="background: #f44336;">Reset Quiz</button>
+        <div id="historyTab" class="tab-content">
+            <div class="section">
+                <h3>Quiz History</h3>
+                <div id="historyList"></div>
+            </div>
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, push, set, get, query, orderByChild } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbJ7wHDeNfMjnGzwctvhMVqQXSuSSvkzY",
+            authDomain: "quiz-andrei.firebaseapp.com",
+            databaseURL: "https://quiz-andrei-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "quiz-andrei",
+            storageBucket: "quiz-andrei.firebasestorage.app",
+            messagingSenderId: "610532400940",
+            appId: "1:610532400940:web:d676e3dd0cd5f9d3975689"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
         let questions = [];
         let currentQuestionIndex = 0;
-        let score = parseInt(localStorage.getItem('quizScore') || '0');
-        let answeredQuestions = new Set(JSON.parse(localStorage.getItem('answeredQuestions') || '[]'));
-        
-        // Initialize
-        updateScoreDisplay();
-        checkRewardStatus();
-        
-        function updateScoreDisplay() {
-            document.getElementById('score').textContent = score;
-        }
-        
-        function checkRewardStatus() {
-            const rewardDiv = document.getElementById('rewardStatus');
-            if (score >= 90) {
-                const hoursEarned = Math.floor(score / 90);
-                const remaining = score % 90;
-                rewardDiv.textContent = `🎮 Congratulations! You've earned ${hoursEarned} hour${hoursEarned > 1 ? 's' : ''} of play time! ${remaining} points carried over.`;
-                rewardDiv.classList.remove('hidden');
+        let currentScore = 0;
+        let pointsPerQuestion = 1;
+        let quizTitle = '';
+        let startTime = null;
+        let timerInterval = null;
+        let wrongQuestions = [];
+        let completedQuizzes = new Set();
+
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'create') {
+                document.querySelector('.nav-tab:nth-child(1)').classList.add('active');
+                document.getElementById('createTab').classList.add('active');
             } else {
-                rewardDiv.textContent = `Keep going! ${90 - score} more points to earn 1 hour of play time! 🎯`;
-                rewardDiv.classList.remove('hidden');
+                document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
+                document.getElementById('historyTab').classList.add('active');
+                loadHistory();
+            }
+        };
+
+        async function loadHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '<p style="text-align: center; color: #999;">Loading...</p>';
+            
+            try {
+                const quizzesRef = ref(database, 'quizzes');
+                const snapshot = await get(quizzesRef);
+                
+                if (!snapshot.exists()) {
+                    historyList.innerHTML = `
+                        <div class="empty-state">
+                            <p style="font-size: 18px;">No quizzes completed yet</p>
+                            <p>Start a quiz to see your history here!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const quizzes = [];
+                snapshot.forEach(child => {
+                    quizzes.push({ id: child.key, ...child.val() });
+                });
+                
+                quizzes.sort((a, b) => b.timestamp - a.timestamp);
+                
+                let html = '';
+                quizzes.forEach(quiz => {
+                    const date = new Date(quiz.timestamp);
+                    const dateStr = date.toLocaleDateString('de-DE');
+                    const timeStr = date.toLocaleTimeString('de-DE');
+                    const duration = formatDuration(quiz.timeTaken);
+                    const percentage = Math.round((quiz.score / quiz.totalPossible) * 100);
+                    
+                    html += `
+                        <div class="history-item">
+                            <div class="history-header">
+                                <div class="history-title">${quiz.title}</div>
+                                <div class="history-score">${quiz.score}/${quiz.totalPossible}</div>
+                            </div>
+                            <div class="history-details">
+                                <div class="history-detail"><strong>Date:</strong> ${dateStr}</div>
+                                <div class="history-detail"><strong>Time:</strong> ${timeStr}</div>
+                                <div class="history-detail"><strong>Duration:</strong> ${duration}</div>
+                                <div class="history-detail"><strong>Score:</strong> ${percentage}%</div>
+                            </div>
+                    `;
+                    
+                    if (quiz.wrongQuestions && quiz.wrongQuestions.length > 0) {
+                        html += `
+                            <div class="wrong-questions">
+                                <h4>❌ Wrong Answers (${quiz.wrongQuestions.length})</h4>
+                                <ul>
+                        `;
+                        quiz.wrongQuestions.forEach(q => {
+                            html += `<li>${q}</li>`;
+                        });
+                        html += `
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    html += '</div>';
+                });
+                
+                historyList.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading history:', error);
+                historyList.innerHTML = '<div class="alert alert-warning">Error loading history. Please try again.</div>';
             }
         }
-        
+
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const mins = Math.floor(elapsed / 60);
+                const secs = elapsed % 60;
+                document.getElementById('timer').textContent = 
+                    `Time: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            return Math.floor((Date.now() - startTime) / 1000);
+        }
+
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -287,7 +623,7 @@ Correct: C</pre>
                 reader.readAsText(file);
             }
         });
-        
+
         function parseQuestions(text) {
             const parsed = [];
             const blocks = text.split(/\n\s*\n/).filter(b => b.trim());
@@ -296,18 +632,18 @@ Correct: C</pre>
                 const lines = block.split('\n').map(l => l.trim()).filter(l => l);
                 if (lines.length < 3) return;
                 
-                const questionLine = lines.find(l => l.startsWith('Q:'));
+                const questionLine = lines.find(l => l.match(/^(\d+\.)?\s*Q:/i) || l.match(/^\d+\./));
                 if (!questionLine) return;
                 
-                const question = questionLine.substring(2).trim();
+                let question = questionLine.replace(/^\d+\.\s*/, '').replace(/^Q:\s*/i, '').trim();
                 const options = [];
                 let correctAnswer = '';
                 
                 lines.forEach(line => {
                     if (line.match(/^[A-D]\)/)) {
                         options.push(line);
-                    } else if (line.startsWith('Correct:')) {
-                        correctAnswer = line.split(':')[1].trim().toUpperCase();
+                    } else if (line.match(/Correct:/i)) {
+                        correctAnswer = line.split(':')[1].trim().toUpperCase().charAt(0);
                     }
                 });
                 
@@ -318,56 +654,102 @@ Correct: C</pre>
             
             return parsed;
         }
-        
-        function loadQuestions() {
+
+        async function checkIfQuizCompleted(title) {
+            try {
+                const quizzesRef = ref(database, 'quizzes');
+                const snapshot = await get(quizzesRef);
+                
+                if (!snapshot.exists()) return false;
+                
+                let completed = false;
+                snapshot.forEach(child => {
+                    const quiz = child.val();
+                    if (quiz.title === title) {
+                        completed = true;
+                    }
+                });
+                
+                return completed;
+            } catch (error) {
+                console.error('Error checking quiz completion:', error);
+                return false;
+            }
+        }
+
+        window.loadQuestions = async function() {
+            quizTitle = document.getElementById('quizTitle').value.trim();
             const text = document.getElementById('questionsText').value;
+            
+            if (!quizTitle) {
+                alert('Please enter a quiz title!');
+                return;
+            }
+            
             if (!text.trim()) {
                 alert('Please paste or upload questions first!');
                 return;
             }
             
+            const alreadyCompleted = await checkIfQuizCompleted(quizTitle);
+            if (alreadyCompleted) {
+                alert('This quiz has already been completed! You can only take each quiz once.');
+                return;
+            }
+            
+            pointsPerQuestion = parseInt(document.getElementById('pointsPerQuestion').value) || 1;
             questions = parseQuestions(text);
+            
             if (questions.length === 0) {
                 alert('No valid questions found. Please check the format.');
                 return;
             }
             
+            currentScore = 0;
+            currentQuestionIndex = 0;
+            wrongQuestions = [];
+            
             document.getElementById('uploadSection').classList.add('hidden');
             document.getElementById('quizSection').classList.remove('hidden');
             document.getElementById('totalQuestions').textContent = questions.length;
+            document.getElementById('quizTitleDisplay').textContent = quizTitle;
+            document.getElementById('currentScore').textContent = currentScore;
             
-            currentQuestionIndex = 0;
+            startTimer();
             showQuestion();
-        }
-        
+        };
+
         function showQuestion() {
             if (currentQuestionIndex >= questions.length) {
-                document.getElementById('questionCard').innerHTML = '<h2 style="text-align: center; color: #4caf50;">🎉 Quiz Complete!</h2><p style="text-align: center; margin-top: 20px;">Great job! Your progress has been saved.</p>';
-                document.getElementById('nextBtn').classList.add('hidden');
+                finishQuiz();
                 return;
             }
             
             const q = questions[currentQuestionIndex];
             document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
             
-            let html = `<div class="question-text">${q.question}</div><div class="options">`;
+            let html = `
+                <div class="question-header">
+                    <div class="question-text">${q.question}</div>
+                    <div class="points-badge">+${pointsPerQuestion} ${pointsPerQuestion === 1 ? 'point' : 'points'}</div>
+                </div>
+                <div class="options">`;
             
             q.options.forEach((option, index) => {
                 const letter = option.charAt(0);
-                html += `<div class="option" onclick="selectAnswer('${letter}')">${option}</div>`;
+                html += `<div class="option" onclick="window.selectAnswer('${letter}')">${option}</div>`;
             });
             
             html += '</div><div id="feedback"></div>';
             document.getElementById('questionCard').innerHTML = html;
             document.getElementById('nextBtn').classList.add('hidden');
         }
-        
-        function selectAnswer(selected) {
+
+        window.selectAnswer = function(selected) {
             const q = questions[currentQuestionIndex];
             const options = document.querySelectorAll('.option');
             const feedback = document.getElementById('feedback');
             
-            // Disable further clicks
             options.forEach(opt => {
                 opt.style.pointerEvents = 'none';
                 const letter = opt.textContent.charAt(0);
@@ -378,44 +760,68 @@ Correct: C</pre>
                 }
             });
             
-            const questionId = `q${currentQuestionIndex}`;
-            if (!answeredQuestions.has(questionId)) {
-                if (selected === q.correctAnswer) {
-                    score++;
-                    feedback.innerHTML = '✅ Correct! +1 point';
-                    feedback.className = 'feedback correct';
-                } else {
-                    feedback.innerHTML = `❌ Incorrect. The correct answer is ${q.correctAnswer}`;
-                    feedback.className = 'feedback incorrect';
-                }
-                
-                answeredQuestions.add(questionId);
-                localStorage.setItem('quizScore', score.toString());
-                localStorage.setItem('answeredQuestions', JSON.stringify([...answeredQuestions]));
-                updateScoreDisplay();
-                checkRewardStatus();
+            if (selected === q.correctAnswer) {
+                currentScore += pointsPerQuestion;
+                feedback.innerHTML = `✅ Correct! +${pointsPerQuestion} ${pointsPerQuestion === 1 ? 'point' : 'points'}`;
+                feedback.className = 'feedback correct';
             } else {
-                feedback.innerHTML = '⚠️ You already answered this question.';
-                feedback.className = 'feedback';
+                feedback.innerHTML = `❌ Incorrect. The correct answer is ${q.correctAnswer}`;
+                feedback.className = 'feedback incorrect';
+                wrongQuestions.push(q.question);
             }
             
+            document.getElementById('currentScore').textContent = currentScore;
             document.getElementById('nextBtn').classList.remove('hidden');
-        }
-        
-        function nextQuestion() {
+        };
+
+        window.nextQuestion = function() {
             currentQuestionIndex++;
             showQuestion();
-        }
-        
-        function resetQuiz() {
-            if (confirm('Are you sure you want to reset the quiz? This will clear all progress.')) {
-                localStorage.removeItem('quizScore');
-                localStorage.removeItem('answeredQuestions');
-                score = 0;
-                answeredQuestions.clear();
-                updateScoreDisplay();
-                checkRewardStatus();
-                location.reload();
+        };
+
+        async function finishQuiz() {
+            const timeTaken = stopTimer();
+            const totalPossible = questions.length * pointsPerQuestion;
+            
+            document.getElementById('questionCard').innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: #4caf50; margin-bottom: 20px;">🎉 Quiz Complete!</h2>
+                    <p style="font-size: 24px; margin-bottom: 10px;">Final Score: <strong>${currentScore}/${totalPossible}</strong></p>
+                    <p style="font-size: 18px; color: #666;">Time taken: ${formatDuration(timeTaken)}</p>
+                    <p style="margin-top: 20px; color: #999;">Saving results...</p>
+                </div>
+            `;
+            document.getElementById('nextBtn').classList.add('hidden');
+            
+            try {
+                const quizzesRef = ref(database, 'quizzes');
+                const newQuizRef = push(quizzesRef);
+                
+                await set(newQuizRef, {
+                    title: quizTitle,
+                    score: currentScore,
+                    totalPossible: totalPossible,
+                    timeTaken: timeTaken,
+                    wrongQuestions: wrongQuestions,
+                    timestamp: Date.now(),
+                    dateCompleted: new Date().toISOString()
+                });
+                
+                document.getElementById('questionCard').innerHTML = `
+                    <div style="text-align: center;">
+                        <h2 style="color: #4caf50; margin-bottom: 20px;">🎉 Quiz Complete!</h2>
+                        <p style="font-size: 24px; margin-bottom: 10px;">Final Score: <strong>${currentScore}/${totalPossible}</strong></p>
+                        <p style="font-size: 18px; color: #666; margin-bottom: 20px;">Time taken: ${formatDuration(timeTaken)}</p>
+                        <div class="alert alert-success">✅ Results saved successfully!</div>
+                        <button class="btn" onclick="location.reload()">Start New Quiz</button>
+                        <button class="btn" onclick="window.switchTab('history')">View History</button>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error saving quiz:', error);
+                document.getElementById('questionCard').innerHTML += `
+                    <div class="alert alert-warning">⚠️ Error saving results. Please check your connection.</div>
+                `;
             }
         }
     </script>
