@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz Admin</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 18px; max-width: 980px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin: 12px 0; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #ccc; background: #f7f7f7; cursor: pointer; }
+    button:hover { background: #efefef; }
+    input, textarea, select { padding: 10px 12px; border-radius: 10px; border: 1px solid #ccc; }
+    textarea { width: 100%; min-height: 240px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .muted { color: #666; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; vertical-align: top; }
+    .ok { border: 1px solid #b7e1b7; background: #f2fbf2; border-radius: 10px; padding: 10px; }
+    .warn { border: 1px solid #ffd39c; background: #fff7ed; border-radius: 10px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Quiz Admin</h1>
+
+  <div class="card" id="pinCard">
+    <div class="muted">Parent PIN</div>
+    <div class="row">
+      <input id="pinInput" type="password" placeholder="PIN" />
+      <button id="pinBtn">Öffnen</button>
+    </div>
+    <div class="muted" style="margin-top:8px;">
+      Hinweis: Das ist nur UI-Schutz. Für echte Sicherheit brauchst du Login + DB-Regeln (kann ich dir auch geben).
+    </div>
+  </div>
+
+  <div id="adminArea" style="display:none;">
+    <div class="card">
+      <h2>Neues Quiz anlegen</h2>
+      <div class="row">
+        <div>
+          <div class="muted">Quiz Titel</div>
+          <input id="titleInput" style="min-width:320px;" placeholder="z.B. Das Eismonster" />
+        </div>
+        <div>
+          <div class="muted">Punkte pro richtige Antwort</div>
+          <input id="ppqInput" type="number" min="1" value="1" style="width:160px;" />
+        </div>
+        <div>
+          <div class="muted">Veröffentlichen?</div>
+          <select id="pubSelect">
+            <option value="true">Ja</option>
+            <option value="false">Nein</option>
+          </select>
+        </div>
+        <button id="createQuiz">Speichern</button>
+      </div>
+
+      <div class="muted" style="margin-top:10px;">Fragen-Format:</div>
+      <pre class="muted" style="margin:6px 0 10px; white-space:pre-wrap;">Q: Frage?
+A) Antwort A
+B) Antwort B
+C) Antwort C
+D) Antwort D
+Correct: B</pre>
+
+      <textarea id="questionsInput" placeholder="Hier Fragen einfügen..."></textarea>
+      <div id="createMsg" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Quizzes</h2>
+      <div id="quizList" class="muted">Lade…</div>
+    </div>
+
+    <div class="card">
+      <h2>History & Statistik (pro Quiz)</h2>
+      <div class="row">
+        <input id="kidFilter" placeholder="Kid Name (optional)" />
+        <button id="loadHistory">Laden</button>
+      </div>
+      <div id="historyBox" class="muted" style="margin-top:10px;">Noch nichts geladen.</div>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
