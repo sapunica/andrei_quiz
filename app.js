@@ -362,8 +362,24 @@ submitBtn.onclick = async () => {
     const ppq = Number(currentQuiz.pointsPerQuestion || 1);
     const gainedPoints = correct * ppq;
 
-    await saveAttempt(user.uid, currentQuiz, correct, gainedPoints, durationSec, wrong);
-    await awardPoints(user.uid, gainedPoints);
+try {
+  await saveAttempt(user.uid, currentQuiz, correct, gainedPoints, durationSec, wrong);
+} catch (e) {
+  resultBox.className = "card warn";
+  resultBox.style.display = "";
+  resultBox.textContent = "Fehler beim Speichern des Quiz-Ergebnisses: " + (e.message || e);
+  return;
+}
+
+try {
+  await awardPoints(user.uid, gainedPoints);
+} catch (e) {
+  resultBox.className = "card warn";
+  resultBox.style.display = "";
+  resultBox.textContent = "Fehler beim Punkte-Update: " + (e.message || e);
+  return;
+}
+
 
     await refreshDashboard();
     await refreshQuizList();
