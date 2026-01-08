@@ -322,7 +322,7 @@ submitBtn.onclick = async () => {
     if (await hasAttempt(user.uid, currentQuiz.id)) {
       stopTimer();
       submitNote.textContent = "Schon erledigt. Keine Punkte.";
-      submitBtn.disabled = false;
+      submitBtn.disabled = true; // keep disabled
       return refreshQuizList();
     }
 
@@ -352,7 +352,7 @@ submitBtn.onclick = async () => {
       resultBox.style.display = "";
       resultBox.textContent = `Bitte alle Fragen beantworten. (${answered}/${currentQuiz.questions.length})`;
       submitNote.textContent = "";
-      submitBtn.disabled = false;
+      submitBtn.disabled = false; // allow fix + retry
       return;
     }
 
@@ -362,24 +362,27 @@ submitBtn.onclick = async () => {
     const ppq = Number(currentQuiz.pointsPerQuestion || 1);
     const gainedPoints = correct * ppq;
 
-try {
-  await saveAttempt(user.uid, currentQuiz, correct, gainedPoints, durationSec, wrong);
-} catch (e) {
-  resultBox.className = "card warn";
-  resultBox.style.display = "";
-  resultBox.textContent = "Fehler beim Speichern des Quiz-Ergebnisses: " + (e.message || e);
-  return;
-}
+    try {
+      await saveAttempt(user.uid, currentQuiz, correct, gainedPoints, durationSec, wrong);
+    } catch (e) {
+      resultBox.className = "card warn";
+      resultBox.style.display = "";
+      resultBox.textContent = "Fehler beim Speichern des Quiz-Ergebnisses: " + (e.message || e);
+      submitNote.textContent = "";
+      submitBtn.disabled = false; // retry possible
+      return;
+    }
 
-try {
-  await awardPoints(user.uid, gainedPoints);
-} catch (e) {
-  resultBox.className = "card warn";
-  resultBox.style.display = "";
-  resultBox.textContent = "Fehler beim Punkte-Update: " + (e.message || e);
-  return;
-}
-
+    try {
+      await awardPoints(user.uid, gainedPoints);
+    } catch (e) {
+      resultBox.className = "card warn";
+      resultBox.style.display = "";
+      resultBox.textContent = "Fehler beim Punkte-Update: " + (e.message || e);
+      submitNote.textContent = "";
+      submitBtn.disabled = false; // retry possible
+      return;
+    }
 
     await refreshDashboard();
     await refreshQuizList();
@@ -393,9 +396,10 @@ try {
       <div class="muted" style="margin-top:8px;">Falsche Fragen: ${wrong.length}</div>
     `;
 
-    submitNote.textContent = "";
+    submitNote.textContent = "Gespeichert.";
+    submitBtn.disabled = true; // stay inactive
     currentQuiz = null;
-    submitBtn.disabled = false;
+
   } catch (e) {
     stopTimer();
     console.error(e);
@@ -407,7 +411,7 @@ try {
       (e && e.message ? e.message : String(e));
 
     submitNote.textContent = "";
-    submitBtn.disabled = false;
+    submitBtn.disabled = false; // allow retry
   }
 };
 
