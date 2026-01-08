@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Quiz App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .score-board {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .score-board h2 {
+            font-size: 48px;
+            margin: 10px 0;
+        }
+        
+        .score-board p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .reward-status {
+            background: #ffd93d;
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #f0f4ff;
+            border-color: #764ba2;
+        }
+        
+        .upload-area input {
+            display: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .question-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .option.correct {
+            border-color: #4caf50;
+            background: #4caf50;
+            color: white;
+        }
+        
+        .option.incorrect {
+            border-color: #f44336;
+            background: #f44336;
+            color: white;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .feedback.correct {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .feedback.incorrect {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .instructions pre {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Reading Quiz Challenge</h1>
+        
+        <div class="score-board">
+            <p>Current Score</p>
+            <h2 id="score">0</h2>
+            <p>out of 90 points</p>
+        </div>
+        
+        <div id="rewardStatus" class="reward-status hidden"></div>
+        
+        <div id="uploadSection" class="section">
+            <h3>Upload Questions</h3>
+            <div class="instructions">
+                <strong>Format your questions like this:</strong>
+                <pre>Q: What is the main character's name?
+A) John
+B) Sarah
+C) Michael
+D) Emma
+Correct: B
+
+Q: Where does the story take place?
+A) New York
+B) London
+C) Paris
+D) Tokyo
+Correct: C</pre>
+            </div>
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <p>📁 Click to upload a text file with questions</p>
+                <p style="font-size: 14px; color: #666; margin-top: 10px;">Or paste questions below</p>
+                <input type="file" id="fileInput" accept=".txt">
+            </div>
+            <textarea id="questionsText" placeholder="Or paste your questions here..." style="width: 100%; height: 150px; margin-top: 15px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-family: monospace;"></textarea>
+            <button class="btn" onclick="loadQuestions()">Load Questions</button>
+        </div>
+        
+        <div id="quizSection" class="section hidden">
+            <h3>Question <span id="questionNumber">1</span> of <span id="totalQuestions">0</span></h3>
+            <div id="questionCard" class="question-card"></div>
+            <button id="nextBtn" class="btn hidden" onclick="nextQuestion()">Next Question</button>
+            <button class="btn" onclick="resetQuiz()" style="background: #f44336;">Reset Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = parseInt(localStorage.getItem('quizScore') || '0');
+        let answeredQuestions = new Set(JSON.parse(localStorage.getItem('answeredQuestions') || '[]'));
+        
+        // Initialize
+        updateScoreDisplay();
+        checkRewardStatus();
+        
+        function updateScoreDisplay() {
+            document.getElementById('score').textContent = score;
+        }
+        
+        function checkRewardStatus() {
+            const rewardDiv = document.getElementById('rewardStatus');
+            if (score >= 90) {
+                const hoursEarned = Math.floor(score / 90);
+                const remaining = score % 90;
+                rewardDiv.textContent = `🎮 Congratulations! You've earned ${hoursEarned} hour${hoursEarned > 1 ? 's' : ''} of play time! ${remaining} points carried over.`;
+                rewardDiv.classList.remove('hidden');
+            } else {
+                rewardDiv.textContent = `Keep going! ${90 - score} more points to earn 1 hour of play time! 🎯`;
+                rewardDiv.classList.remove('hidden');
+            }
+        }
+        
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('questionsText').value = event.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        function parseQuestions(text) {
+            const parsed = [];
+            const blocks = text.split(/\n\s*\n/).filter(b => b.trim());
+            
+            blocks.forEach(block => {
+                const lines = block.split('\n').map(l => l.trim()).filter(l => l);
+                if (lines.length < 3) return;
+                
+                const questionLine = lines.find(l => l.startsWith('Q:'));
+                if (!questionLine) return;
+                
+                const question = questionLine.substring(2).trim();
+                const options = [];
+                let correctAnswer = '';
+                
+                lines.forEach(line => {
+                    if (line.match(/^[A-D]\)/)) {
+                        options.push(line);
+                    } else if (line.startsWith('Correct:')) {
+                        correctAnswer = line.split(':')[1].trim().toUpperCase();
+                    }
+                });
+                
+                if (question && options.length >= 2 && correctAnswer) {
+                    parsed.push({ question, options, correctAnswer });
+                }
+            });
+            
+            return parsed;
+        }
+        
+        function loadQuestions() {
+            const text = document.getElementById('questionsText').value;
+            if (!text.trim()) {
+                alert('Please paste or upload questions first!');
+                return;
+            }
+            
+            questions = parseQuestions(text);
+            if (questions.length === 0) {
+                alert('No valid questions found. Please check the format.');
+                return;
+            }
+            
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('quizSection').classList.remove('hidden');
+            document.getElementById('totalQuestions').textContent = questions.length;
+            
+            currentQuestionIndex = 0;
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                document.getElementById('questionCard').innerHTML = '<h2 style="text-align: center; color: #4caf50;">🎉 Quiz Complete!</h2><p style="text-align: center; margin-top: 20px;">Great job! Your progress has been saved.</p>';
+                document.getElementById('nextBtn').classList.add('hidden');
+                return;
+            }
+            
+            const q = questions[currentQuestionIndex];
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            
+            let html = `<div class="question-text">${q.question}</div><div class="options">`;
+            
+            q.options.forEach((option, index) => {
+                const letter = option.charAt(0);
+                html += `<div class="option" onclick="selectAnswer('${letter}')">${option}</div>`;
+            });
+            
+            html += '</div><div id="feedback"></div>';
+            document.getElementById('questionCard').innerHTML = html;
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+        
+        function selectAnswer(selected) {
+            const q = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            const feedback = document.getElementById('feedback');
+            
+            // Disable further clicks
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                const letter = opt.textContent.charAt(0);
+                if (letter === q.correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (letter === selected) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            const questionId = `q${currentQuestionIndex}`;
+            if (!answeredQuestions.has(questionId)) {
+                if (selected === q.correctAnswer) {
+                    score++;
+                    feedback.innerHTML = '✅ Correct! +1 point';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.innerHTML = `❌ Incorrect. The correct answer is ${q.correctAnswer}`;
+                    feedback.className = 'feedback incorrect';
+                }
+                
+                answeredQuestions.add(questionId);
+                localStorage.setItem('quizScore', score.toString());
+                localStorage.setItem('answeredQuestions', JSON.stringify([...answeredQuestions]));
+                updateScoreDisplay();
+                checkRewardStatus();
+            } else {
+                feedback.innerHTML = '⚠️ You already answered this question.';
+                feedback.className = 'feedback';
+            }
+            
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+        
+        function resetQuiz() {
+            if (confirm('Are you sure you want to reset the quiz? This will clear all progress.')) {
+                localStorage.removeItem('quizScore');
+                localStorage.removeItem('answeredQuestions');
+                score = 0;
+                answeredQuestions.clear();
+                updateScoreDisplay();
+                checkRewardStatus();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
